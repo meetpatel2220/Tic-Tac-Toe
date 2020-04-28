@@ -2,6 +2,8 @@ package com.meet.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView player1textview;
     private TextView player2textview;
 
+    SharedPreferences sp;
+    public static final String mypreference = "mypreference";
 
 
     @Override
@@ -28,7 +32,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         player1textview=findViewById(R.id.t1);
         player2textview=findViewById(R.id.t2);
+        sp = getSharedPreferences(mypreference,
+                Context.MODE_PRIVATE);
 
+
+         if(sp.contains("p1")){
+             player1point=Integer.parseInt(sp.getString("p1",""));
+
+             player1textview.setText("Player 1 : "+player1point);
+
+         }
+        if(sp.contains("p2")){
+            player2point=Integer.parseInt(sp.getString("p2",""));
+
+            player2textview.setText("Player 2 : "+player2point);
+
+
+        }
         for(int i=0;i<3;i++){
 
             for(int j=0;j<3;j++){
@@ -52,6 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 player2point=0;
                 updatepoint();
                 resetboard();
+
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString("p1","0");
+                editor.putString("p2","0");
+
+                editor.commit();
 
 
             }
@@ -142,12 +168,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void player1win(){
 
         player1point++;
+
+
         Toast.makeText( MainActivity.this, "Player 1 win!", Toast.LENGTH_SHORT).show();
      updatepoint();
      resetboard();
 
     }
     private void player2win(){
+        player2point++;
+      Toast.makeText( MainActivity.this, "Player 2 win!", Toast.LENGTH_SHORT).show();
+
+
         updatepoint();
         resetboard();
 
@@ -160,6 +192,14 @@ resetboard();
 
         player1textview.setText("Player 1 : "+player1point);
         player2textview.setText("Player 2 : "+player2point);
+
+        SharedPreferences.Editor editor=sp.edit();
+        editor.putString("p1",player1point+"");
+        editor.putString("p2",player2point+"");
+
+        editor.commit();
+
+        Toast.makeText(this, "p1 point"+player1point , Toast.LENGTH_SHORT).show();
 
 
 
@@ -178,4 +218,10 @@ resetboard();
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+
+    }
 }

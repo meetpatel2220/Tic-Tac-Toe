@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#CA7B17"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -52,6 +53,7 @@
 
 
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_margin="8dp"
